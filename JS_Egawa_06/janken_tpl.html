@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+<body>
+
+<header>
+  <h1>じゃんけん</h1>
+</header>
+
+<main>
+  <ul id="btn">
+    <li id="gu_btn">グー</li>
+    <li id="cho_btn">チョキ</li>
+    <li id="par_btn">パー</li>
+    <li id="atodashi">後出し</li>
+  </ul>
+  <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div>
+  <div id="judgment">きっとあなたは勝てない</div>
+  <!-- <audio src="sound/pa1.mp3" controls></audio> -->
+  <!-- ↓ボタン押したときに出る音 -->
+  <audio id="audio" controls>
+    <source src="sound/pa1.mp3">
+  </audio><br>
+  <!-- <input type="button" value="play" onclick="audio_play()"> -->
+</main>
+
+<footer></footer>
+<script>
+//じゃんけん用のSCRIPTを書いてください
+//******************************************↓関数・数値******************************************
+$("body").hide().fadeIn(1000);
+$("#judgment").hide().fadeIn(2000).css("backgroundColor","yellow");
+$("audio").hide();
+//ボタンクリック関数
+  function click(){
+          audio.play();
+          cnt++;
+          if(cnt%10==0){
+            alert("グー回数:"+cnt_g+"チョキ回数:"+cnt_c+"パー回数:"+cnt_p+"じゃんけん回数:"+cnt+"後出し回数："+cnt_a);
+          }
+  }
+//判定関数
+  function judgment(){
+    if(me==pc){
+      $("#judgment").text("あいこ");
+  　}else if((me==1&&pc==2)||(me==2&&pc==3)||(me==3&&pc==1)){
+    　$("#judgment").text("勝ち");
+  　}else if((pc==1&&me==2)||(pc==2&&me==3)||(pc==3&&me==1)){
+      $("#judgment").text("負け");
+    }
+  } 
+//相手の手関数
+  function aite(){
+      pc = Math.ceil(Math.random()*3);
+      if(pc==1){
+      $("#pc_hands").text("相手はグー");
+      }else if(pc==2){
+      $("#pc_hands").text("相手はチョキ");
+      }else if(pc==3){
+      $("#pc_hands").text("相手はパー");
+      }
+}
+let me = 0;
+let pc = 0;
+let cnt_g = 0;
+let cnt_c = 0;
+let cnt_p = 0;
+let cnt_a = 0;//後出し回数
+let cnt = 0;
+//じゃんけん関数
+function janken(){
+  $("#gu_btn").on("click",function(){
+    me= 1;
+    cnt_g++;
+    click();
+  });
+
+  $("#cho_btn").on("click",function(){
+    me = 2;
+    cnt_c++;
+    click();
+  });
+
+  $("#par_btn").on("click",function(){
+    me = 3;
+    cnt_p++;  
+    click();
+  });
+
+  //相手の手と勝敗
+  $("#gu_btn,#cho_btn,#par_btn").on("click",function(){
+    aite();
+    judgment();
+  });
+}
+//******************************************↑関数・数値*************************************
+
+//******************************************↓本文******************************************
+//じゃんけん
+janken();
+//後だし機能
+$("#atodashi").on("click",function(){
+    cnt_a++;
+    //相手の手
+    aite();
+    //じゃんけん
+    janken();
+});
+//******************************************↑本文******************************************
+</script>
+</body>
+</html>
